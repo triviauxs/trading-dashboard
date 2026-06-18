@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: trading-dashboard
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true --server.enableCORS false
+    envVars:
+      - key: SEBPLUS_PASSWORD
+        value: Pierre2026
+      - key: TELEGRAM_BOT_TOKEN
+        value: 8953093607:AAFdR4rV3ysLo4Ky9EWPQGhj2_3__vHMoCI
+      - key: TELEGRAM_CHAT_ID
+        value: "1748018688"
+      - key: EMAIL_RECEIVER
+        value: triviauxs@hotmail.fr
