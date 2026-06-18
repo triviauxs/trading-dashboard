@@ -1,0 +1,40 @@
+{
+  "positions": [
+    {"ticker": "AIP",       "name": "Arteris Inc",         "units": 44.93514, "buy_price": 7.98785,   "currency": "USD", "type": "Action"},
+    {"ticker": "NVDA",      "name": "Nvidia",               "units": 3.64976,  "buy_price": 122.03802, "currency": "USD", "type": "Action"},
+    {"ticker": "GOOG",      "name": "Alphabet",             "units": 0.80348,  "buy_price": 248.91795, "currency": "USD", "type": "Action"},
+    {"ticker": "META",      "name": "Meta Platforms",       "units": 0.44796,  "buy_price": 607.28879, "currency": "USD", "type": "Action"},
+    {"ticker": "AAPL",      "name": "Apple",                "units": 0.7648,   "buy_price": 198.79627, "currency": "USD", "type": "Action"},
+    {"ticker": "HO.PA",     "name": "Thales Group",         "units": 0.743196, "buy_price": 192.01,    "currency": "EUR", "type": "Action"},
+    {"ticker": "MSFT",      "name": "Microsoft",            "units": 0.43999,  "buy_price": 454.50869, "currency": "USD", "type": "Action"},
+    {"ticker": "GTT.PA",    "name": "Gaztransport Technigaz","units": 0.842329,"buy_price": 130.40,    "currency": "EUR", "type": "Action"},
+    {"ticker": "TSLA",      "name": "Tesla",                "units": 0.3576,   "buy_price": 279.6401,  "currency": "USD", "type": "Action"},
+    {"ticker": "ORCL",      "name": "Oracle",               "units": 1.09,     "buy_price": 270.0,     "currency": "USD", "type": "Action"},
+    {"ticker": "ENX.PA",    "name": "Euronext",             "units": 0.818817, "buy_price": 100.60,    "currency": "EUR", "type": "Action"},
+    {"ticker": "TTE.PA",    "name": "TotalEnergies",        "units": 1.558946, "buy_price": 59.22,     "currency": "EUR", "type": "Action"},
+    {"ticker": "XPO",       "name": "XPO Logistics",        "units": 0.59752,  "buy_price": 117.15,    "currency": "USD", "type": "Action"},
+    {"ticker": "NVS",       "name": "Novartis",             "units": 0.71633,  "buy_price": 97.72,     "currency": "USD", "type": "Action"},
+    {"ticker": "AM.PA",     "name": "Dassault Aviation",    "units": 0.297457, "buy_price": 311.60,    "currency": "EUR", "type": "Action"},
+    {"ticker": "PINS",      "name": "Pinterest",            "units": 4.36554,  "buy_price": 34.36,     "currency": "USD", "type": "Action"},
+    {"ticker": "0992.HK",   "name": "BYD Co Ltd",           "units": 5.785296, "buy_price": 134.40,    "currency": "HKD", "type": "Action"},
+    {"ticker": "BA.L",      "name": "BAE Systems",          "units": 2.44312,  "buy_price": 1585.50,   "currency": "GBp", "type": "Action"},
+    {"ticker": "AMZN",      "name": "Amazon",               "units": 0.24363,  "buy_price": 213.64,    "currency": "USD", "type": "Action"},
+    {"ticker": "AIR.PA",    "name": "Airbus",               "units": 0.276484, "buy_price": 167.62,    "currency": "EUR", "type": "Action"},
+    {"ticker": "CA.PA",     "name": "Carrefour",            "units": 2.931013, "buy_price": 15.90,     "currency": "EUR", "type": "Action"},
+    {"ticker": "TRI.PA",    "name": "Trigano",              "units": 0.286631, "buy_price": 162.60,    "currency": "EUR", "type": "Action"},
+    {"ticker": "RHM.DE",    "name": "Rheinmetall",          "units": 0.035178, "buy_price": 1317.50,   "currency": "EUR", "type": "Action"},
+    {"ticker": "SAN.PA",    "name": "Sanofi",               "units": 0.404377, "buy_price": 91.90,     "currency": "EUR", "type": "Action"},
+    {"ticker": "LDO.MI",    "name": "Leonardo SpA",         "units": 0.518736, "buy_price": 44.67,     "currency": "EUR", "type": "Action"},
+    {"ticker": "STLAM.MI",  "name": "Stellantis",           "units": 0.902031, "buy_price": 20.60,     "currency": "EUR", "type": "Action"},
+    {"ticker": "GLD",       "name": "SPDR Gold ETF",        "units": 1.42556,  "buy_price": 238.5023,  "currency": "USD", "type": "ETF"},
+    {"ticker": "SPY",       "name": "S&P500 ETF",           "units": 0.61576,  "buy_price": 552.14874, "currency": "USD", "type": "ETF"},
+    {"ticker": "QQQ",       "name": "Invesco QQQ Nasdaq",   "units": 0.02286,  "buy_price": 437.4853,  "currency": "USD", "type": "ETF"},
+    {"ticker": "BTC-EUR",   "name": "Bitcoin",              "units": 0.00084,  "buy_price": 78586.57,  "currency": "EUR", "type": "Crypto"}
+  ],
+  "settings": {
+    "stop_loss_pct": -15.0,
+    "take_profit_pct": 30.0,
+    "alert_email": "triviauxs@hotmail.fr",
+    "refresh_seconds": 60
+  }
+}

@@ -1,0 +1,177 @@
+[
+  {
+    "date": "05/01/2026",
+    "nom": "TotalEnergies SE",
+    "montant_eur": 0.9902
+  },
+  {
+    "date": "23/01/2026",
+    "nom": "Oracle Corporation",
+    "montant_eur": 0.2452
+  },
+  {
+    "date": "12/02/2026",
+    "nom": "Apple",
+    "montant_eur": 0.1011
+  },
+  {
+    "date": "12/02/2026",
+    "nom": "Apple",
+    "montant_eur": 0.0421
+  },
+  {
+    "date": "27/02/2026",
+    "nom": "Starbucks Corp",
+    "montant_eur": 0.7448
+  },
+  {
+    "date": "27/02/2026",
+    "nom": "Starbucks Corp",
+    "montant_eur": 0.2031
+  },
+  {
+    "date": "12/03/2026",
+    "nom": "Microsoft",
+    "montant_eur": 0.1302
+  },
+  {
+    "date": "12/03/2026",
+    "nom": "Microsoft",
+    "montant_eur": 0.1649
+  },
+  {
+    "date": "16/03/2026",
+    "nom": "Novartis ADR",
+    "montant_eur": 1.922
+  },
+  {
+    "date": "16/03/2026",
+    "nom": "Alphabet",
+    "montant_eur": 0.0609
+  },
+  {
+    "date": "16/03/2026",
+    "nom": "Alphabet",
+    "montant_eur": 0.0522
+  },
+  {
+    "date": "16/03/2026",
+    "nom": "Alphabet",
+    "montant_eur": 0.0087
+  },
+  {
+    "date": "21/03/2026",
+    "nom": "State Street SPDR S&P 500 ETF",
+    "montant_eur": 0.3632
+  },
+  {
+    "date": "21/03/2026",
+    "nom": "State Street SPDR S&P 500 ETF",
+    "montant_eur": 0.4497
+  },
+  {
+    "date": "24/03/2026",
+    "nom": "Invesco QQQ",
+    "montant_eur": 0.0086
+  },
+  {
+    "date": "26/03/2026",
+    "nom": "Meta Platforms Inc",
+    "montant_eur": 0.1474
+  },
+  {
+    "date": "26/03/2026",
+    "nom": "Meta Platforms Inc",
+    "montant_eur": 0.026
+  },
+  {
+    "date": "01/04/2026",
+    "nom": "NVIDIA Corporation",
+    "montant_eur": 0.0086
+  },
+  {
+    "date": "01/04/2026",
+    "nom": "NVIDIA Corporation",
+    "montant_eur": 0.0086
+  },
+  {
+    "date": "02/04/2026",
+    "nom": "Trigano SA",
+    "montant_eur": 0.4505
+  },
+  {
+    "date": "04/04/2026",
+    "nom": "TotalEnergies SE",
+    "montant_eur": 0.9898
+  },
+  {
+    "date": "23/04/2026",
+    "nom": "AIRBUS SE",
+    "montant_eur": 0.7532
+  },
+  {
+    "date": "24/04/2026",
+    "nom": "Oracle Corporation",
+    "montant_eur": 0.2475
+  },
+  {
+    "date": "07/05/2026",
+    "nom": "Sanofi",
+    "montant_eur": 1.2531
+  },
+  {
+    "date": "14/05/2026",
+    "nom": "Apple",
+    "montant_eur": 0.1115
+  },
+  {
+    "date": "14/05/2026",
+    "nom": "Apple",
+    "montant_eur": 0.0429
+  },
+  {
+    "date": "15/05/2026",
+    "nom": "Rheinmetall AG",
+    "montant_eur": 0.3012
+  },
+  {
+    "date": "19/05/2026",
+    "nom": "Dassault Aviation SA",
+    "montant_eur": 1.0683
+  },
+  {
+    "date": "20/05/2026",
+    "nom": "Thales Group",
+    "montant_eur": 0.5764
+  },
+  {
+    "date": "20/05/2026",
+    "nom": "Thales Group",
+    "montant_eur": 0.4129
+  },
+  {
+    "date": "20/05/2026",
+    "nom": "Thales Group",
+    "montant_eur": 0.6452
+  },
+  {
+    "date": "27/05/2026",
+    "nom": "Euronext NV",
+    "montant_eur": 2.2208
+  },
+  {
+    "date": "28/05/2026",
+    "nom": "Carrefour SA",
+    "montant_eur": 2.1283
+  },
+  {
+    "date": "29/05/2026",
+    "nom": "Starbucks Corp",
+    "montant_eur": 0.2058
+  },
+  {
+    "date": "29/05/2026",
+    "nom": "Starbucks Corp",
+    "montant_eur": 0.7546
+  }
+]
