@@ -4,7 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import json, os, time
 from datetime import datetime
-from streamlit_autorefresh import st_autorefresh
+import streamlit.components.v1 as components
 from prices import get_prices
 from alerts import check_alerts
 
@@ -169,7 +169,7 @@ with tab1:
             st.divider()
 
     st.caption(f"⏱ Rafraîchissement automatique toutes les {refresh}s")
-    st_autorefresh(interval=refresh * 1000, key="auto_refresh")
+    components.html(f"<script>setTimeout(()=>window.location.reload(),{refresh*1000});</script>", height=0)
 
 # ════════════════════════════════════════════════════════════════════════════
 # ONGLET 2 — DIVIDENDES
