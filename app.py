@@ -77,7 +77,12 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ONGLET 1 — DASHBOARD
 # ════════════════════════════════════════════════════════════════════════════
 with tab1:
-    st.title("📈 Mon Portefeuille eToro")
+    col_t, col_d = st.columns([3,1])
+    with col_t:
+        st.title("📈 Mon Portefeuille eToro")
+    with col_d:
+        st.write("")
+        st.caption(f"🕐 MAJ : {datetime.now().strftime('%d/%m/%Y %H:%M')}")
 
     with st.spinner("Chargement des prix..."):
         pos_filtrees = [p for p in positions if p["type"] in filtre]
@@ -294,6 +299,76 @@ with tab3:
             save_portfolio(data)
             st.success(f"✅ {t} supprimé !")
             st.rerun()
+
+    # ── Import eToro ──────────────────────────────────────────────────────
+    st.divider()
+    st.subheader("📥 Synchroniser depuis eToro (Excel)")
+    st.caption("eToro → Portefeuille → Historique → Exporter → glisse le fichier ici")
+
+    up_etoro = st.file_uploader("Relevé eToro (.xlsx)", type=["xlsx"], key="etoro_up")
+    if up_etoro:
+        try:
+            xl = pd.ExcelFile(up_etoro)
+            st.info(f"Feuilles trouvées : {', '.join(xl.sheet_names)}")
+
+            # Chercher la feuille des positions ouvertes
+            sheet = None
+            for name_sh in xl.sheet_names:
+                if any(k in name_sh.lower() for k in ["open", "position", "portfolio", "portefeuille"]):
+                    sheet = name_sh
+                    break
+            if not sheet:
+                sheet = xl.sheet_names[0]
+
+            df_raw = pd.read_excel(up_etoro, sheet_name=sheet)
+            st.write(f"**Feuille utilisée : {sheet}** ({len(df_raw)} lignes)")
+            st.dataframe(df_raw.head(5), use_container_width=True)
+
+            # Mapping automatique des colonnes
+            cols = [c.lower() for c in df_raw.columns]
+            col_map = {}
+            for c in df_raw.columns:
+                cl = c.lower()
+                if any(k in cl for k in ["symbol","ticker","action","instrument"]):
+                    col_map["ticker"] = c
+                elif any(k in cl for k in ["name","nom","libellé","compagnie"]):
+                    col_map["name"] = c
+                elif any(k in cl for k in ["unit","quantit","amount","nb"]):
+                    col_map["units"] = c
+                elif any(k in cl for k in ["open rate","prix","price","open","cours"]):
+                    col_map["buy_price"] = c
+
+            if "ticker" in col_map and "units" in col_map and "buy_price" in col_map:
+                if st.button("✅ Importer ces positions", type="primary"):
+                    nouvelles = []
+                    for _, row in df_raw.iterrows():
+                        ticker_val = str(row[col_map["ticker"]]).strip().upper()
+                        if not ticker_val or ticker_val == "NAN":
+                            continue
+                        nom = str(row[col_map.get("name", col_map["ticker"])]).strip()
+                        try:
+                            units_val = float(row[col_map["units"]])
+                            price_val = float(row[col_map["buy_price"]])
+                        except:
+                            continue
+                        if units_val <= 0 or price_val <= 0:
+                            continue
+                        currency = "EUR" if any(x in ticker_val for x in [".PA",".MI",".DE",".L","-EUR"]) else "USD"
+                        typ = "Crypto" if "BTC" in ticker_val or "ETH" in ticker_val else "ETF" if ticker_val in ["GLD","SPY","QQQ"] else "Action"
+                        nouvelles.append({"ticker": ticker_val, "name": nom, "units": round(units_val,8),
+                                          "buy_price": round(price_val,4), "currency": currency, "type": typ})
+
+                    if nouvelles:
+                        data["positions"] = nouvelles
+                        save_portfolio(data)
+                        st.success(f"✅ {len(nouvelles)} positions importées depuis eToro !")
+                        st.rerun()
+                    else:
+                        st.error("Aucune position valide trouvée dans le fichier.")
+            else:
+                st.warning(f"Colonnes détectées : {list(df_raw.columns)}\n\nJe n'arrive pas à mapper automatiquement. Envoie une capture à Claude pour qu'il ajuste.")
+        except Exception as e:
+            st.error(f"Erreur lecture fichier : {e}")
 
 # ════════════════════════════════════════════════════════════════════════════
 # ONGLET 4 — IBKR TRADING
