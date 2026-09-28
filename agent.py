@@ -118,20 +118,42 @@ def test_sebplus_auth(password: str) -> bool:
     except Exception:
         return False
 
-def call_sebplus(password: str, messages: list) -> str | None:
+def build_portfolio_context() -> str:
+    """Construit un résumé du portefeuille pour injecter dans le contexte Seb+"""
+    try:
+        data = load()
+        positions = data.get("positions", [])
+        lines = [f"Voici le portefeuille d'investissement actuel de l'utilisateur ({len(positions)} positions) :"]
+        for p in positions:
+            lines.append(f"- {p['ticker']} ({p['name']}) : {p['units']} unités, prix d'achat {p['buy_price']} {p['currency']}, type {p['type']}")
+        lines.append("\nTu peux répondre à toutes les questions sur ce portefeuille (performance, diversification, conseils, etc.).")
+        return "\n".join(lines)
+    except Exception:
+        return ""
+
+def call_sebplus(password: str, messages: list, inject_portfolio: bool = True) -> str | None:
     """
     Appelle l'API Seb+ et retourne la réponse IA.
     messages = [{"role": "user"/"assistant", "content": "..."}, ...]
     Retourne None si Seb+ est indisponible ou si le mot de passe est faux.
     """
     try:
+        full_messages = list(messages)
+        if inject_portfolio:
+            ctx = build_portfolio_context()
+            if ctx:
+                full_messages = [
+                    {"role": "user",      "content": ctx},
+                    {"role": "assistant", "content": "Bien noté, j'ai accès à ton portefeuille. Comment puis-je t'aider ?"}
+                ] + full_messages
+
         res = requests.post(
             f"{SEBPLUS_URL}/api/chat",
             headers={
                 "Content-Type": "application/json",
                 "x-password": password
             },
-            json={"messages": messages},
+            json={"messages": full_messages},
             timeout=30
         )
         if res.ok:
