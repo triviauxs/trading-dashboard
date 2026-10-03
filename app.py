@@ -68,12 +68,13 @@ with st.sidebar:
         st.success("Bilan envoyé !")
 
 # ── ONGLETS PRINCIPAUX ───────────────────────────────────────────────────────
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "📊 Dashboard",
     "💰 Dividendes",
     "⚙️ Gestion Portfolio",
     "🏦 IBKR Trading",
-    "🤖 Agent IA"
+    "🤖 Agent IA",
+    "🔍 Analyse"
 ])
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -555,3 +556,119 @@ with tab5:
         if st.button("🗑️ Effacer la conversation"):
             st.session_state.chat_history = []
             st.rerun()
+
+# ════════════════════════════════════════════════════════════════════════════
+# ONGLET 6 — ANALYSE (positions négatives + news + synthèse Seb+)
+# ════════════════════════════════════════════════════════════════════════════
+with tab6:
+    import yfinance as yf
+    from agent import call_sebplus, build_portfolio_context
+
+    st.title("🔍 Analyse des positions en perte")
+    st.caption("Récupère les actualités Yahoo Finance et demande une synthèse à Seb+")
+
+    # ── Récupérer les prix pour identifier les pertes ─────────────────────
+    pos_filtrées = [p for p in positions if p["type"] in filtre]
+    if not pos_filtrées:
+        st.info("Aucune position dans les filtres sélectionnés.")
+        st.stop()
+
+    with st.spinner("Chargement des prix..."):
+        df_analyse = get_prices(pos_filtrées)
+
+    df_pertes = df_analyse[df_analyse["G/P (%)"].notna() & (df_analyse["G/P (%)"] < 0)].copy()
+    df_pertes = df_pertes.sort_values("G/P (%)")
+
+    if df_pertes.empty:
+        st.success("🎉 Aucune position en perte actuellement !")
+    else:
+        st.subheader(f"⚠️ {len(df_pertes)} position(s) en perte")
+        st.dataframe(
+            df_pertes[["Ticker", "Nom", "G/P (%)", "G/P (€)", "Valeur (€)"]].style.format({
+                "G/P (%)": "{:.2f}%", "G/P (€)": "{:+.2f}€", "Valeur (€)": "{:.2f}€"
+            }),
+            use_container_width=True, hide_index=True
+        )
+
+        st.divider()
+        st.subheader("📰 Actualités récentes")
+
+        # ── Récupérer les news pour chaque position en perte ─────────────
+        news_par_ticker = {}
+        for _, row in df_pertes.iterrows():
+            ticker_sym = row["Ticker"]
+            try:
+                news_raw = yf.Ticker(ticker_sym).news or []
+                articles = []
+                for n in news_raw[:3]:
+                    titre = n.get("content", {}).get("title") or n.get("title", "")
+                    if titre:
+                        articles.append(titre)
+                news_par_ticker[ticker_sym] = articles
+            except:
+                news_par_ticker[ticker_sym] = []
+
+        # Affichage des news
+        for _, row in df_pertes.iterrows():
+            t = row["Ticker"]
+            gp = row["G/P (%)"]
+            with st.expander(f"**{t}** — {row['Nom']} ({gp:.2f}%)"):
+                articles = news_par_ticker.get(t, [])
+                if articles:
+                    for a in articles:
+                        st.markdown(f"• {a}")
+                else:
+                    st.caption("Aucune actualité trouvée")
+
+        st.divider()
+
+        # ── Synthèse Seb+ ─────────────────────────────────────────────────
+        st.subheader("🤖 Synthèse Seb+")
+
+        if "analyse_result" not in st.session_state:
+            st.session_state.analyse_result = ""
+
+        try:
+            from config import SEBPLUS_PASSWORD
+            pwd_analyse = SEBPLUS_PASSWORD
+        except:
+            pwd_analyse = st.session_state.get("sebplus_pwd", "")
+
+        if not pwd_analyse:
+            st.warning("Configure Seb+ dans l'onglet Agent IA pour obtenir la synthèse.")
+        else:
+            if st.button("🔍 Lancer l'analyse Seb+", type="primary"):
+                # Construire le prompt avec pertes + news
+                lignes_pertes = []
+                for _, row in df_pertes.iterrows():
+                    t = row["Ticker"]
+                    nom = row["Nom"]
+                    gp_pct = row["G/P (%)"]
+                    gp_eur = row["G/P (€)"]
+                    articles = news_par_ticker.get(t, [])
+                    bloc = f"**{t} ({nom})** : {gp_pct:.2f}% ({gp_eur:+.2f}€)"
+                    if articles:
+                        bloc += "\nActualités récentes :\n" + "\n".join(f"  - {a}" for a in articles)
+                    else:
+                        bloc += "\n(Pas d'actualités disponibles)"
+                    lignes_pertes.append(bloc)
+
+                prompt_analyse = (
+                    "Voici mes positions en perte dans mon portefeuille eToro :\n\n"
+                    + "\n\n".join(lignes_pertes)
+                    + "\n\nPour chaque position, fais une synthèse courte : "
+                    "contexte actuel de l'entreprise, perspectives à court terme, "
+                    "et ta recommandation (couper la position ou tenir). "
+                    "Sois direct et pratique."
+                )
+
+                with st.spinner("Seb+ analyse tes positions... (peut prendre 30s si en veille)"):
+                    result = call_sebplus(pwd_analyse, [{"role": "user", "content": prompt_analyse}], inject_portfolio=False)
+
+                if result:
+                    st.session_state.analyse_result = result
+                else:
+                    st.error("Seb+ indisponible. Réessaie dans 1 minute (réveil du serveur).")
+
+            if st.session_state.analyse_result:
+                st.markdown(st.session_state.analyse_result)
