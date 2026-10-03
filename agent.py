@@ -94,11 +94,16 @@ def detect_intent(text: str) -> str:
     """Détecte l'intention de la commande"""
     text_low = text.lower()
 
-    vente_mots = ["vendu", "vend", "ferme", "fermé", "clôture", "clôturé", "sorti", "coupe", "coupé", "supprime"]
-    achat_mots = ["acheté", "achète", "achat", "renforce", "renforcé", "ajouté", "ajoute", "investi", "pris", "pris position"]
+    # Patterns de vente — nécessitent un sujet direct (pas "si je coupe", "dois-je couper")
+    vente_patterns = [
+        r"\bj[''e]\s*ai\s*(vendu|fermé|clôturé|sorti|coupé|supprimé)\b",
+        r"\b(vends|ferme|supprime|clôture)\s+\w",
+        r"\b(sortir|couper)\s+(?:de\s+)?\w{2,}",
+    ]
+    achat_mots = ["acheté", "achète", "achat", "renforce", "renforcé", "ajouté", "ajoute", "investi", "pris position"]
 
-    for m in vente_mots:
-        if m in text_low:
+    for p in vente_patterns:
+        if re.search(p, text_low):
             return "vendre"
     for m in achat_mots:
         if m in text_low:
