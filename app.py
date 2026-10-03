@@ -594,16 +594,14 @@ with tab6:
         st.subheader("📰 Actualités récentes")
 
         # ── Récupérer les news pour chaque position en perte ─────────────
+        from yfinance import Search
         news_par_ticker = {}
         for _, row in df_pertes.iterrows():
             ticker_sym = row["Ticker"]
+            nom_recherche = row["Nom"]
             try:
-                news_raw = yf.Ticker(ticker_sym).news or []
-                articles = []
-                for n in news_raw[:3]:
-                    titre = n.get("content", {}).get("title") or n.get("title", "")
-                    if titre:
-                        articles.append(titre)
+                resultats = Search(f"{nom_recherche} stock", news_count=3).news or []
+                articles = [n["title"] for n in resultats if n.get("title")][:3]
                 news_par_ticker[ticker_sym] = articles
             except:
                 news_par_ticker[ticker_sym] = []
