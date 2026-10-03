@@ -8,6 +8,9 @@ import streamlit.components.v1 as components
 from prices import get_prices
 from alerts import check_alerts
 
+# Répertoire du script pour les chemins relatifs
+_DIR = os.path.dirname(os.path.abspath(__file__))
+
 st.set_page_config(page_title="Trading Dashboard", page_icon="📈", layout="wide")
 
 st.markdown("""
@@ -19,11 +22,11 @@ st.markdown("""
 
 # ── Chargement données ───────────────────────────────────────────────────────
 def load_portfolio():
-    with open("portfolio.json", "r", encoding="utf-8") as f:
+    with open(os.path.join(_DIR, "portfolio.json"), "r", encoding="utf-8") as f:
         return json.load(f)
 
 def save_portfolio(data):
-    with open("portfolio.json", "w", encoding="utf-8") as f:
+    with open(os.path.join(_DIR, "portfolio.json"), "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 def load_dividendes():

@@ -6,7 +6,7 @@ Utilise Seb+ (https://assistant-seb.onrender.com) comme moteur IA
 
 import json, re, os, requests
 
-PORTFOLIO_FILE = "portfolio.json"
+PORTFOLIO_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "portfolio.json")
 SEBPLUS_URL    = "https://assistant-seb.onrender.com"
 
 # Mapping noms courants → tickers
